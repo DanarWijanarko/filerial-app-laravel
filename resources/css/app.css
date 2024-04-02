@@ -12,3 +12,27 @@
         @apply absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-gray-400 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-500;
     }
 }
+
+/* width */
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply rounded-xl bg-gray-900;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply rounded-xl bg-gray-700;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply hover:bg-gray-800;
+}
+
+div ::-webkit-scrollbar {
+    @apply w-1;
+}

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('search_histories', function (Blueprint $table) {
             $table->id()->primary()->autoIncrement();
-            $table->integer('user_id')->nullable();
+            $table->foreignId('user_id');
             $table->string('type')->nullable();
             $table->string('body')->unique()->nullable();
             $table->timestamps();

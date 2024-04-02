@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,9 @@ class LoginController extends Controller
     {
         $validated = $request->validated();
 
-        if (Auth::attempt($validated)) {
+        $remember = Arr::exists($validated, 'remember') ? true : false;
+
+        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
             $request->session()->regenerate();
 
             return redirect()->route("main.home");

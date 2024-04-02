@@ -1,6 +1,14 @@
+@section('title')
+    {{ __('Home') }}
+@endsection
+
 <x-main-layout>
-    <h1 class="text-center text-4xl">HOMEE</h1>
-    <p>User: {{ Auth::user() }}</p>
+    {{-- Latest Korean Tv Shows --}}
+    <x-swiper title="Latest Korean Tv Shows" :items="$shows" class="pt-8" />
+
+    {{-- Latest Korean Movies --}}
+    <x-swiper title="Latest Korean Tv Shows" :items="$movies" class="pt-8" />
+
     <form action="{{ route('auth.logout') }}" method="POST">
         @csrf
         <button type="submit">Logout</button>

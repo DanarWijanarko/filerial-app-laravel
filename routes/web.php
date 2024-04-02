@@ -1,10 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Main\HomeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Main\ShowController;
+use App\Http\Controllers\Main\MovieController;
+use App\Http\Controllers\Main\PersonController;
+use App\Http\Controllers\Main\SearchController;
+use App\Http\Controllers\Main\ExploreController;
+use App\Http\Controllers\Main\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::middleware(["myGuest"])->group(function () {
     // ? Handle Login
@@ -27,11 +33,43 @@ Route::middleware(['myAuth', 'admin'])->group(function () {
 });
 
 Route::middleware(['myAuth'])->group(function () {
-    // ? Handle Logout
-    Route::post('/logout', [LoginController::class, 'destroy'])->name('auth.logout');
-
     // ? Home Controller
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('main.home');
     });
+
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('user.index');
+    });
+
+    Route::controller(SearchController::class)->group(function () {
+        Route::get("/search", "index")->name("search.index");
+        Route::get("/search/q", "search")->name("search.query");
+        Route::delete("/search/q/delete", "historyDelete")->name("search.delete");
+    });
+
+    Route::controller(ShowController::class)->group(function () {
+        Route::get("/shows/{type?}", "index")->name("shows.index");
+        Route::post("/shows/filters", "filter")->name("shows.filter"); // ! Working
+        Route::get("/shows/{name}/detail", "detail")->name("shows.detail");
+    });
+
+    Route::controller(MovieController::class)->group(function () {
+        Route::get("/movies", "index")->name("movies.index");
+        Route::get("/movies/{name}/detail", "detail")->name("movies.detail");
+    });
+
+    Route::controller(PersonController::class)->group(function () {
+        Route::get("/person/{name}/detail/", "detail")->name("person.detail");
+    });
+
+    // ? to :: providers, networks, company, collection
+    // ? name :: to name eg. /company/marvel, /providers/netflix, /networks/tvn
+    // ? params :: id, mediaType(movies, shows), => fix
+    Route::controller(ExploreController::class)->group(function () {
+        Route::get("/explores/{to}/{name}/q", "index")->name("explore");
+    });
+
+    // ? Handle Logout
+    Route::post('/logout', [LoginController::class, 'destroy'])->name('auth.logout');
 });
