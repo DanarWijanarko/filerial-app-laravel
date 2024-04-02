@@ -25,17 +25,15 @@ class LoginController extends Controller
      */
     public function store(LoginRequest $request) : RedirectResponse
     {
-        $validated = $request->validated();
+        $request->validated();
 
-        $remember = Arr::exists($validated, 'remember') ? true : false;
-
-        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
-            $request->session()->regenerate();
-
-            return redirect()->route("main.home");
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            return back()->with('message', 'The provided credentials do not match our records!');
         }
 
-        return back()->with('message', 'The provided credentials do not match our records!');
+        $request->session()->regenerate();
+
+        return redirect()->route("main.home");
     }
 
     /**

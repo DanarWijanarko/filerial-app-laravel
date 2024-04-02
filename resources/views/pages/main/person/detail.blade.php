@@ -250,14 +250,4 @@
             </div>
         </div>
     </section>
-    </x-layout>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var scrollPosition = window.sessionStorage.getItem('scrollPosition');
-            if (scrollPosition) {
-                window.scrollTo(0, parseInt(scrollPosition));
-                window.sessionStorage.removeItem('scrollPosition');
-            }
-        });
-    </script>
+</x-main-layout>

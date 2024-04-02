@@ -20,7 +20,7 @@
         <div class="-mt-3 mb-8 flex w-full flex-row items-center justify-between">
             {{-- Remember Me --}}
             <div class="flex items-center">
-                <input id="remember" type="checkbox" name="remember" value="true"
+                <input id="remember" type="checkbox" name="remember"
                     class="h-4 w-4 rounded border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-2 focus:ring-blue-600">
                 <label for="remember" class="ms-2 text-sm font-medium text-gray-500">Remember Me</label>
             </div>

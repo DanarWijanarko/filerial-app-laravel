@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Main;
 
-use App\Models\SearchHistory;
 use Illuminate\Http\Request;
+use App\Models\SearchHistory;
 use App\Services\TmdbService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -34,10 +35,22 @@ class SearchController extends Controller
         $type = $request->query("type");
 
         if (SearchHistory::where('body', $query)->first()) {
-            SearchHistory::where('body', $query)->get()->toQuery()->update([
-                'type' => $type,
-                'body' => $query
-            ]);
+            if (SearchHistory::where('user_id', auth()->user()->id)->where('body', $query)->first()) {
+                SearchHistory::where('user_id', auth()->user()->id)->where('body', $query)->get()->toQuery()->update([
+                    'type' => $type,
+                    'body' => $query,
+                ]);
+            } else {
+                // SearchHistory::where('body', $query)->get()->toQuery()->update([
+                //     'type' => $type,
+                //     'body' => $query
+                // ]);
+                SearchHistory::where('user_id', auth()->user()->id)->create([
+                    'user_id' => auth()->user()->id,
+                    'type' => $type,
+                    'body' => $query,
+                ]);
+            }
         } else {
             SearchHistory::create([
                 'user_id' => auth()->user()->id,

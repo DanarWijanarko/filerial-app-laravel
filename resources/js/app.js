@@ -11,3 +11,11 @@ window.Alpine = Alpine;
 Alpine.plugin(collapse);
 
 Alpine.start();
+
+document.addEventListener("DOMContentLoaded", function () {
+    var scrollPosition = window.sessionStorage.getItem("scrollPosition");
+    if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        window.sessionStorage.removeItem("scrollPosition");
+    }
+});

@@ -10,11 +10,10 @@ return new class extends Migration {
      */
     public function up() : void
     {
-        Schema::create('search_histories', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->ulid('id');
             $table->foreignUlid('user_id')->nullable()->index();
-            $table->string('type')->nullable();
-            $table->string('body')->nullable();
+            $table->string('username')->unique();
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration {
      */
     public function down() : void
     {
-        Schema::dropIfExists('search_histories');
+        Schema::dropIfExists('profiles');
     }
 };

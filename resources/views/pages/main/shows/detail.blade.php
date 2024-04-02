@@ -293,7 +293,7 @@
             {{-- Pagination Buttons --}}
             <div class="flex flex-row" x-data="{ trigBtn: null }">
                 <a href="{{ request()->fullUrlWithQuery(['gallery_page' => $images->pagination->current_page - 1]) }}"
-                    @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop); console.log('ww')"
+                    @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                     class="{{ $images->pagination->current_page > 1 ? 'bg-gray-700' : 'pointer-events-none bg-gray-600' }} rounded-l-lg border-y border-l border-gray-600 p-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
                         stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
@@ -438,18 +438,12 @@
     <span class="mb-7 mt-9 flex h-0.5 w-full rounded-full bg-gray-800"></span>
 
     {{-- Recommendations Section --}}
-    <x-swiper title="Recommendation" :items="$recommends" />
-</x-layout>
+    <section class="w-full px-5">
+        <x-swiper title="Recommendation" :items="$recommends" />
+    </section>
+</x-main-layout>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var scrollPosition = window.sessionStorage.getItem('scrollPosition');
-        if (scrollPosition) {
-            window.scrollTo(0, parseInt(scrollPosition));
-            window.sessionStorage.removeItem('scrollPosition');
-        }
-    });
-
     document.addEventListener("alpine:init", () => {
         Alpine.data("select", (sesVal = 1) => ({
             open: false,

@@ -20,11 +20,12 @@ class TmdbService
         $this->convert = new Api();
     }
 
-    public function getTrending()
+    public function getTrending(int $page = 1)
     {
         try {
             $response = Http::withQueryParameters([
                 'api_key' => $this->apiKey,
+                'page' => $page,
             ])->get($this->baseUrl . '/trending/all/day');
 
             if ($response->successful()) {
