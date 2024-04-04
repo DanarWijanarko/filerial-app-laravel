@@ -10,7 +10,6 @@
         {{-- Section Poster Image --}}
         <img src="{{ $detail->profile }}" alt="{{ $detail->name }}" class="w-96 rounded-md">
 
-
         {{-- Section Contents --}}
         <div class="bg--400 flex max-h-[576px] w-[500px] flex-col justify-center gap-1 py-3.5" x-data="{ isVideoPlayerOpen: false }">
             {{-- Name --}}
@@ -85,8 +84,7 @@
             {{-- Buttons --}}
             <div class="mt-1.5 flex flex-row gap-5">
                 {{-- Add to Collection --}}
-                <button
-                    class="flex flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold transition-all hover:bg-purple-700 active:scale-95">
+                <button class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="h-7 w-7">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -113,25 +111,25 @@
             <div class="flex flex-row gap-1.5">
                 <a href="{{ $url->customUrl('tv_credits') }}"
                     @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
-                    class="rounded-lg bg-purple-600 px-4 py-2 font-bold transition-all hover:bg-purple-700">
+                    class="rounded-lg bg-blue-600 px-4 py-2 font-bold transition-all hover:bg-blue-700">
                     Tv Shows
                 </a>
                 <a href="{{ $url->customUrl('movie_credits') }}"
                     @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
-                    class="rounded-lg bg-purple-600 px-4 py-2 font-bold transition-all hover:bg-purple-700">
+                    class="rounded-lg bg-blue-600 px-4 py-2 font-bold transition-all hover:bg-blue-700">
                     Movies
                 </a>
             </div>
 
             {{-- Pagination Information --}}
             <h2 class="text-sm text-gray-500">
-                Showing <span class="font-semibold text-purple-500">
+                Showing <span class="font-semibold text-blue-500">
                     {{ ($credits->pagination->current_page - 1) * $credits->pagination->per_page + 1 }}
                 </span>
-                to <span class="font-semibold text-purple-500">
+                to <span class="font-semibold text-blue-500">
                     {{ min($credits->pagination->current_page * $credits->pagination->per_page, $credits->pagination->total) }}
                 </span>
-                of <span class="font-semibold text-purple-500">
+                of <span class="font-semibold text-blue-500">
                     {{ $credits->pagination->total }}
                 </span>
             </h2>
@@ -140,7 +138,7 @@
             <div class="flex flex-row">
                 <a href="{{ request()->fullUrlWithQuery(['credit_page' => $credits->pagination->current_page - 1]) }}"
                     @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
-                    class="{{ $credits->pagination->current_page > 1 ? 'bg-purple-700' : 'pointer-events-none bg-purple-600' }} rounded-l-lg border-y border-l border-purple-600 p-1.5">
+                    class="{{ $credits->pagination->current_page > 1 ? 'bg-blue-700' : 'pointer-events-none bg-blue-600' }} rounded-l-lg border-y border-l border-blue-600 p-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
                         stroke-linejoin="round" class="h-5 w-5">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -149,7 +147,7 @@
                 </a>
                 <a href="{{ request()->fullUrlWithQuery(['credit_page' => $credits->pagination->current_page + 1]) }}"
                     @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
-                    class="{{ $credits->pagination->current_page < $credits->pagination->last_page ? 'bg-purple-700' : 'pointer-events-none bg-purple-600' }} rounded-r-lg border border-purple-600 p-1.5">
+                    class="{{ $credits->pagination->current_page < $credits->pagination->last_page ? 'bg-blue-700' : 'pointer-events-none bg-blue-600' }} rounded-r-lg border border-blue-600 p-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
                         stroke-linejoin="round" class="h-5 w-5">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -199,13 +197,13 @@
 
             {{-- Pagination Information --}}
             <h2 class="text-sm text-gray-500">
-                Showing <span class="font-semibold text-purple-500">
+                Showing <span class="font-semibold text-blue-500">
                     {{ ($images->pagination->current_page - 1) * $images->pagination->per_page + 1 }}
                 </span>
-                to <span class="font-semibold text-purple-500">
+                to <span class="font-semibold text-blue-500">
                     {{ min($images->pagination->current_page * $images->pagination->per_page, $images->pagination->total) }}
                 </span>
-                of <span class="font-semibold text-purple-500">
+                of <span class="font-semibold text-blue-500">
                     {{ $images->pagination->total }}
                 </span>
             </h2>

@@ -7,6 +7,8 @@
 
     <title>Filerial&nbsp;&nbsp;|&nbsp; @yield('title')</title>
 
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
     <style>
         body {
             background-image: url({{ asset('images/neflix.webp') }})

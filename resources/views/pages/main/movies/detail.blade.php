@@ -121,7 +121,7 @@
             <div class="flex flex-row items-center gap-1">
                 <p class="font-bold text-gray-600">Collection:</p>
                 <a href="{{ route('explore', ['to' => 'collection', 'name' => $detail->belongs_to_collection->name, 'id' => $detail->belongs_to_collection->id, 'media_type' => $detail->mediaType]) }}"
-                    class="font-medium text-gray-400 transition-all hover:text-purple-600 hover:underline">
+                    class="font-medium text-gray-400 transition-all hover:text-blue-600 hover:underline">
                     {{ $detail->belongs_to_collection->name }}
                 </a>
             </div>
@@ -129,9 +129,10 @@
             {{-- Genres --}}
             <div class="flex w-full flex-row items-center gap-3 font-medium">
                 @foreach ($detail->genres as $index => $genre)
-                    <p class="text-xl font-medium text-gray-400">
+                    <a href="{{ route('explore', ['to' => 'genre', 'name' => $genre->name, 'id' => $genre->id, 'media_type' => $detail->mediaType]) }}"
+                        class="text-xl font-medium text-gray-400">
                         {{ $genre->name }}
-                    </p>
+                    </a>
                     @if ($index < count($detail->genres) - 1)
                         <span class="h-5 w-0.5 rounded-full bg-gray-600"></span>
                     @endif
@@ -159,8 +160,7 @@
             {{-- Buttons --}}
             <div class="mt-1.5 flex flex-row gap-5">
                 {{-- Add to Collection --}}
-                <button
-                    class="flex flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold transition-all hover:bg-purple-700 active:scale-95">
+                <button class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="h-7 w-7">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -174,7 +174,7 @@
                 {{-- Play Trailer --}}
                 @if ($detail->videos === null)
                     <button @click="isVideoPlayerOpen = true" disabled x-data="{ onHover: false }" x-on:mouseover="onHover = true" x-on:mouseout="onHover = false"
-                        class="relative flex cursor-not-allowed flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold">
+                        class="relative flex cursor-not-allowed flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -187,7 +187,7 @@
                     </button>
                 @else
                     <button @click="isVideoPlayerOpen = true"
-                        class="flex flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold transition-all hover:bg-purple-700 active:scale-95">
+                        class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -266,13 +266,13 @@
 
             {{-- Pagination Information --}}
             <h2 class="text-sm text-gray-500">
-                Showing <span class="font-semibold text-purple-500">
+                Showing <span class="font-semibold text-blue-500">
                     {{ ($images->pagination->current_page - 1) * $images->pagination->per_page + 1 }}
                 </span>
-                to <span class="font-semibold text-purple-500">
+                to <span class="font-semibold text-blue-500">
                     {{ min($images->pagination->current_page * $images->pagination->per_page, $images->pagination->total) }}
                 </span>
-                of <span class="font-semibold text-purple-500">
+                of <span class="font-semibold text-blue-500">
                     {{ $images->pagination->total }}
                 </span>
             </h2>

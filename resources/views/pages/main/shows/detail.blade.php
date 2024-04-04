@@ -141,9 +141,10 @@
             {{-- Genres --}}
             <div class="flex w-full flex-row items-center gap-3 font-medium">
                 @foreach ($detail->genres as $index => $genre)
-                    <p class="text-xl font-medium text-gray-400">
+                    <a href="{{ route('explore', ['to' => 'genre', 'name' => $genre->name, 'id' => $genre->id, 'media_type' => $detail->mediaType]) }}"
+                        class="text-xl font-medium text-gray-400 transition-all hover:text-blue-600 hover:underline">
                         {{ $genre->name }}
-                    </p>
+                    </a>
                     @if ($index < count($detail->genres) - 1)
                         <span class="h-5 w-0.5 rounded-full bg-gray-600"></span>
                     @endif
@@ -171,23 +172,20 @@
             {{-- Buttons --}}
             <div class="mt-1.5 flex flex-row gap-5">
                 {{-- Add to Collection --}}
-                <button
-                    class="flex flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold transition-all hover:bg-purple-700 active:scale-95">
+                <button class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="h-7 w-7">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-                        <path d="M10 12l4 0" />
+                        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
                     </svg>
-                    Add to Collection
+                    Add to Favorite
                 </button>
 
                 {{-- Play Trailer --}}
                 @if ($detail->videos === null)
                     <button @click="isVideoPlayerOpen = true" disabled x-data="{ onHover: false }" x-on:mouseover="onHover = true"
                         x-on:mouseout="onHover = false"
-                        class="relative flex cursor-not-allowed flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold">
+                        class="relative flex cursor-not-allowed flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -200,7 +198,7 @@
                     </button>
                 @else
                     <button @click="isVideoPlayerOpen = true"
-                        class="flex flex-row items-center gap-2 rounded-md bg-purple-600 px-3 py-2 font-bold transition-all hover:bg-purple-700 active:scale-95">
+                        class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -369,7 +367,7 @@
         </div>
 
         {{-- Section Contents --}}
-        <div x-data="{ expanded: false }" x-show="expanded" x-collapse.min.1685px.duration.1000ms class="relative mt-1 flex flex-col gap-5">
+        <div x-data="{ expanded: false }" x-show="expanded" x-collapse.min.1705px.duration.1000ms class="relative mt-1 flex flex-col gap-5 pb-10">
             {{-- Data Loop --}}
             @foreach ($episodes as $ep)
                 <div class="flex w-full flex-row gap-5">
@@ -417,21 +415,26 @@
                             </p>
                         </div>
                         <h2 class="line-clamp-3 text-justify text-lg font-normal text-gray-400">
-                            {{ $ep->overview }}
+                            {{ $ep->overview }} Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam laborum officia ipsam quod esse quae enim vitae
+                            fugit, cum quos sed porro aliquam ducimus blanditiis sapiente vel modi eum similique commodi saepe quis sunt repudiandae. Similique
+                            optio voluptatibus fuga mollitia voluptas officia nobis reiciendis eius! Eligendi rem obcaecati omnis modi?
                         </h2>
                     </div>
                 </div>
             @endforeach
 
             {{-- Collapse Button --}}
-            <button type="button" @click="expanded = ! expanded"
-                class="group absolute bottom-0 flex h-fit w-full items-end justify-center bg-gradient-to-t from-gray-900 from-30% to-transparent transition-all hover:h-24">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                    stroke-linejoin="round" class="bottom-1 h-10 w-10 transition-all group-hover:scale-110 group-hover:text-gray-300">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M6 9l6 6l6 -6" x-bind:d="expanded ? 'M6 15l6 -6l6 6' : 'M6 9l6 6l6 -6'" />
-                </svg>
-            </button>
+            @if ($episodes->count() > 8)
+                <button type="button" @click="expanded = ! expanded"
+                    class="group absolute bottom-0 flex h-fit w-full items-end justify-center bg-gradient-to-t from-gray-900 from-30% to-transparent transition-all hover:h-24">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        class="bottom-1 h-10 w-10 transition-all group-hover:scale-110 group-hover:text-gray-300">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M6 9l6 6l6 -6" x-bind:d="expanded ? 'M6 15l6 -6l6 6' : 'M6 9l6 6l6 -6'" />
+                    </svg>
+                </button>
+            @endif
         </div>
     </section>
 

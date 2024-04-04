@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
@@ -447,7 +448,7 @@ class Api
         return $objResults;
     }
 
-    public function getEpisodes(array $data)
+    public function getEpisodes(array $data) : Collection
     {
         $results = Arr::map(Arr::get($data, 'episodes'), function ($item) {
             return (object) [
@@ -471,7 +472,92 @@ class Api
 
         // dd($objResults);
 
-        return $objResults;
+        return collect($objResults);
+    }
+
+    public function getCollection(string $mediaType, array $data)
+    {
+        // $results = (object) [
+        //     'id' => $data['id'],
+        //     'name' => $data['name'],
+        //     'poster' => $data['poster_path'] ? $this->baseImgUrl . $data['poster_path'] : null,
+        //     'backdrop' => $data['backdrop_path'] ? $this->baseImgUrl . $data['backdrop_path'] : null,
+        //     'results' => Arr::map($data['parts'], function ($item) use ($mediaType) {
+        //         return [
+        //             'mediaType' => $mediaType,
+        //             "slug" => Str::slug($item["title"], language: $item["original_language"]),
+        //             'adult' => $item['adult'],
+        //             'backdrop' => $item['poster_path'] ? $this->baseImgUrl . $item['poster_path'] : null,
+        //             'id' => $item['id'],
+        //             'title' => $item['title'],
+        //             'original_language' => $item['original_language'],
+        //             'original_title' => $item['original_title'],
+        //             'overview' => $item['overview'],
+        //             'poster' => $item['poster_path'] ? $this->baseImgUrl . $item['poster_path'] : null,
+        //             'media_type' => $item['media_type'],
+        //             'genre_ids' => $item['genre_ids'],
+        //             'popularity' => $item['popularity'],
+        //             'release_date' => $item['release_date'],
+        //             'video' => $item['video'],
+        //             'vote_average' => $item['vote_average'],
+        //             'vote_count' => $item['vote_count'],
+        //         ];
+        //     }),
+        // ];
+
+        $results = [];
+        switch ($mediaType) {
+            case "shows":
+                $results = (object) Arr::map($data['parts'], function ($res) {
+                    return [
+                        'mediaType' => 'shows',
+                        'slug' => Str::slug($res['name'], language: $res['original_language']),
+                        'adult' => $res['adult'],
+                        'backdrop' => $res["backdrop_path"] ? $this->baseImgUrl . $res["backdrop_path"] : null,
+                        'genre_ids' => $res['genre_ids'],
+                        'id' => $res['id'],
+                        'origin_country' => $res['origin_country'] ? $this->convertCountry->alpha2($res["origin_country"][0])["name"] : null,
+                        'original_language' => $res['original_language'],
+                        'original_name' => $res['original_name'],
+                        'overview' => $res['overview'],
+                        'popularity' => $res['popularity'],
+                        'poster' => $res["poster_path"] ? $this->baseImgUrl . $res["poster_path"] : null,
+                        'release_date' => $res["first_air_date"] ? Carbon::parse($res["first_air_date"])->format("Y") : null,
+                        'name' => $res['name'],
+                        'vote_average' => $res["vote_average"] ? Number::format($res["vote_average"], maxPrecision: 1) : null,
+                        'vote_count' => $res['vote_count'],
+                    ];
+                });
+                break;
+            case 'movies':
+                $results = (object) Arr::map($data['parts'], function ($res) {
+                    return [
+                        "mediaType" => "movies",
+                        "slug" => Str::slug($res["title"], language: $res["original_language"]),
+                        "adult" => $res["adult"],
+                        "backdrop" => $res["backdrop_path"] ? $this->baseImgUrl . $res["backdrop_path"] : null,
+                        "genre_ids" => $res["genre_ids"],
+                        "id" => $res["id"],
+                        "origin_country" => $this->convertLang->languageByCode1($res["original_language"]),
+                        "original_language" => $res["original_language"],
+                        "original_name" => $res["original_title"],
+                        "overview" => $res["overview"],
+                        "popularity" => $res["popularity"],
+                        "poster" => $res["poster_path"] ? $this->baseImgUrl . $res["poster_path"] : null,
+                        "release_date" => $res["release_date"] ? Carbon::parse($res["release_date"])->format("Y") : null,
+                        "name" => $res["title"],
+                        "vote_average" => $res["vote_average"] ? Number::format($res["vote_average"], maxPrecision: 1) : null,
+                        "vote_count" => $res["vote_count"],
+                    ];
+                });
+                break;
+        }
+
+        $objResults = json_decode(json_encode($results), false);
+
+        // dd($objResults);
+
+        return (object) ['results' => $objResults];
     }
 
     private static function findType($results)

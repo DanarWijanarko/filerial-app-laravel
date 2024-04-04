@@ -65,6 +65,7 @@ class TmdbService
         string $country = null,
         int $companies_id = null,
         int $networks = null,
+        string $genres = null,
         int $providers = null,
         int $page = 1,
     ) {
@@ -78,6 +79,7 @@ class TmdbService
                 'with_origin_country' => $country ?? null,
                 'with_companies' => $companies_id ?? null,
                 'with_networks' => $networks ?? null,
+                'with_genres' => $genres ?? null,
                 'with_watch_providers' => $providers ?? null,
                 'page' => $page,
             ])->get($this->baseUrl . '/discover/' . $this->mediaTypeConvert($mediaType));
@@ -182,6 +184,24 @@ class TmdbService
 
             if ($response->successful()) {
                 return $this->convert->getEpisodes(
+                    $response->json(),
+                );
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function getCollection(string $mediaType, int $collection_id)
+    {
+        try {
+            $response = Http::withQueryParameters([
+                'api_key' => $this->apiKey
+            ])->get($this->baseUrl . '/collection/' . $collection_id);
+
+            if ($response->successful()) {
+                return $this->convert->getCollection(
+                    $mediaType,
                     $response->json(),
                 );
             }

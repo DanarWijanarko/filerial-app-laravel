@@ -10,7 +10,7 @@
             <div class="relative h-14 w-full">
                 {{-- Select Type --}}
                 <select name="type"
-                    class="absolute left-0 top-0 z-10 flex h-14 w-[7.5rem] items-center justify-between rounded-s-lg border border-e-0 border-gray-500 bg-gray-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-700 focus:ring-1 focus:ring-purple-500">
+                    class="absolute left-0 top-0 z-10 flex h-14 w-[7.5rem] items-center justify-between rounded-s-lg border border-e-0 border-gray-500 bg-gray-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-700 focus:ring-1 focus:ring-blue-500">
                     <option selected value="shows">Shows</option>
                     <option value="movies">Movies</option>
                     <option value="person">Person</option>
@@ -18,13 +18,13 @@
                 </select>
 
                 {{-- Query Search --}}
-                <input type="search" autocomplete="off" name="query" @click="isHistoryOpen = ! isHistoryOpen" :class="(open) && 'ring-purple-500'"
-                    class="z-20 block h-full w-full rounded-lg border border-gray-600 bg-gray-700 py-4 pl-[8.5rem] text-sm text-white placeholder-gray-400 outline-none focus:border-none focus:ring-1 focus:ring-purple-500"
+                <input type="search" autocomplete="off" name="query" @click="isHistoryOpen = ! isHistoryOpen" :class="(open) && 'ring-blue-500'"
+                    class="z-20 block h-full w-full rounded-lg border border-gray-600 bg-gray-700 py-4 pl-[8.5rem] text-sm text-white placeholder-gray-400 outline-none focus:border-none focus:ring-1 focus:ring-blue-500"
                     placeholder="Search" />
 
                 {{-- Button Search --}}
                 <button type="submit"
-                    class="absolute end-0 top-0 flex h-full w-16 items-center justify-center rounded-e-lg bg-purple-600 p-2.5 text-sm font-medium hover:bg-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                    class="absolute end-0 top-0 flex h-full w-16 items-center justify-center rounded-e-lg bg-blue-600 p-2.5 text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
                     <svg viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8">
                         <path stroke-width="1.7759999999999998" stroke-linecap="round" stroke="currentColor" stroke-linejoin="round"
                             d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" />
@@ -51,7 +51,7 @@
                             <form action="{{ route('search.delete', ['id' => $history->id]) }}" method="POST">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="transition-all00 flex justify-center px-3 py-2 text-white hover:text-purple-400">
+                                <button type="submit" class="transition-all00 flex justify-center px-3 py-2 text-white hover:text-blue-400">
                                     delete
                                 </button>
                             </form>

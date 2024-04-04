@@ -39,7 +39,20 @@ class ExploreController extends Controller
                     networks: $request->id,
                 );
                 break;
+            case 'genre':
+                $results = $this->tmdb->getDiscover(
+                    $request->media_type,
+                    genres: $request->id,
+                );
+                break;
             case 'collection':
+                $results = $this->tmdb->getCollection(
+                    $request->media_type,
+                    $request->id,
+                );
+                // return view('pages.main.explore.collection', [
+                //     'result' => $results,
+                // ]);
                 break;
             default:
                 abort(404);
