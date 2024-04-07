@@ -28,13 +28,17 @@ class LoginController extends Controller
         $request->validated();
 
         if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            return back()->with('message', 'The provided credentials do not match our records!');
+            return back()->with('status', (object) [
+                'type' => 'error',
+                'message' => $request->name . ' The Provided Credentials do not match our records!',
+            ]);
         }
 
         $request->session()->regenerate();
 
         return redirect()->route("main.home");
     }
+
 
     /**
      * Destroy an authenticated session.

@@ -41,10 +41,6 @@ class SearchController extends Controller
                     'body' => $query,
                 ]);
             } else {
-                // SearchHistory::where('body', $query)->get()->toQuery()->update([
-                //     'type' => $type,
-                //     'body' => $query
-                // ]);
                 SearchHistory::where('user_id', auth()->user()->id)->create([
                     'user_id' => auth()->user()->id,
                     'type' => $type,

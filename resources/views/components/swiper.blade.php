@@ -1,10 +1,12 @@
+@props(['title', 'items', 'detailName' => ''])
+
 <section x-data="{ mySwiper: false }">
     {{-- Section Title --}}
     <h1 class="text-3xl font-bold">{{ $title }}</h1>
 
     @if ((array) $items === [])
-        <h1 class="text-center text-xl pt-8 font-bold text-white">
-            We don't have enough data to suggest any TV shows based on Wedding Impossible.
+        <h1 class="flex h-96 items-center justify-center pt-8 text-xl font-bold text-white">
+            We don't have enough data to suggest any TV shows based on {{ $detailName }}.
         </h1>
     @else
         {{-- Swiper --}}

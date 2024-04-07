@@ -50,9 +50,6 @@ class ExploreController extends Controller
                     $request->media_type,
                     $request->id,
                 );
-                // return view('pages.main.explore.collection', [
-                //     'result' => $results,
-                // ]);
                 break;
             default:
                 abort(404);

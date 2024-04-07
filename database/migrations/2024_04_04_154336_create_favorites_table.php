@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up() : void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->ulid('id')->primary()->unique();
             $table->foreignUlid('user_id')->nullable()->index();
-            $table->string('username')->unique();
+            $table->json('data');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration {
      */
     public function down() : void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('favorites');
     }
 };

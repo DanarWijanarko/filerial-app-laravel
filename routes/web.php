@@ -38,34 +38,41 @@ Route::middleware(['myAuth'])->group(function () {
         Route::get('/', 'index')->name('main.home');
     });
 
+    // ? Profile Controller
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'index')->name('user.index');
+        Route::delete('/profile/{id}', 'favDestroy')->name('user.favDestroy');
     });
 
+    // ? Search Controller
     Route::controller(SearchController::class)->group(function () {
         Route::get("/search", "index")->name("search.index");
         Route::get("/search/q", "search")->name("search.query");
         Route::delete("/search/q/delete", "historyDelete")->name("search.delete");
     });
 
+    // ? Show Controller
     Route::controller(ShowController::class)->group(function () {
         Route::get("/shows/{type?}", "index")->name("shows.index");
         Route::post("/shows/filters", "filter")->name("shows.filter"); // ! Working
         Route::get("/shows/{name}/detail", "detail")->name("shows.detail");
+        Route::post("/shows/addFavorite", "store")->name("shows.store");
     });
 
+    // ? Movie Controller
     Route::controller(MovieController::class)->group(function () {
         Route::get("/movies", "index")->name("movies.index");
         Route::get("/movies/{name}/detail", "detail")->name("movies.detail");
+        Route::post("/movies/addFavorite", "store")->name('movies.store');
     });
 
+    // ? Person Controller
     Route::controller(PersonController::class)->group(function () {
         Route::get("/person/{name}/detail/", "detail")->name("person.detail");
+        Route::post('/person/addFavorite', 'store')->name('person.store');
     });
 
-    // ? to :: providers, networks, company, collection
-    // ? name :: to name eg. /company/marvel, /providers/netflix, /networks/tvn
-    // ? params :: id, mediaType(movies, shows), => fix
+    // ? Explore Controller
     Route::controller(ExploreController::class)->group(function () {
         Route::get("/explores/{to}/{name}/q", "index")->name("explore");
     });

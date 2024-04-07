@@ -15,7 +15,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-2 h-2;
 }
 
 /* Track */
@@ -36,3 +36,5 @@
 div ::-webkit-scrollbar {
     @apply w-1;
 }
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Models\Favorite;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TmdbService;
@@ -44,6 +45,28 @@ class MovieController extends Controller
             'credits' => $movieCredits,
             'images' => $movieImages,
             'recommends' => $recommends->results,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $isExist = Favorite::where('data->id', $request->data['id'])->exists();
+
+        if ($isExist) {
+            return back()->with('status', (object) [
+                'type' => 'error',
+                'message' => $request->data['name'] . ', Already Exists in your Favorite!',
+            ]);
+        }
+
+        Favorite::create([
+            'user_id' => auth()->user()->id,
+            'data' => $request->only('data')['data'],
+        ]);
+
+        return back()->with('status', (object) [
+            'type' => 'success',
+            'message' => $request->data['name'] . ', Successfully Added to My Favorite!',
         ]);
     }
 }

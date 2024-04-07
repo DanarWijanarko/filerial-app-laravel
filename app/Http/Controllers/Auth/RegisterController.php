@@ -38,6 +38,9 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        return redirect()->route("auth.login")->with("message", "Registration Success");
+        return redirect()->route("auth.login")->with('status', (object) [
+            'type' => 'success',
+            'message' => 'Registration Successful.',
+        ]);
     }
 }

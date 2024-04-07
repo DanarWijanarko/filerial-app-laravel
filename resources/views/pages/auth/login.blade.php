@@ -80,20 +80,5 @@
     </form>
 
     {{-- Alert --}}
-    @session('message')
-        <div class="bg-black/85 fixed top-16 flex flex-row items-center justify-center gap-2 rounded-lg border border-gray-900 px-3 py-2 shadow-2xl"
-            x-data="{ isOpen: true }" x-show="isOpen">
-            <h1 class="text-sm font-medium text-white">
-                {{ session('message') }}
-            </h1>
-            <button type="button" class="transition-all hover:text-white/75" @click="isOpen = false" x-transition>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                    stroke-linejoin="round" class="h-5 w-5">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M18 6l-12 12" />
-                    <path d="M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    @endSession
+    <x-alert />
 </x-auth-layout>

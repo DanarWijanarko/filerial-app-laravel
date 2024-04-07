@@ -1,15 +1,14 @@
 import "./bootstrap";
 
 import { register } from "swiper/element/bundle";
-import Alpine from "alpinejs";
-import collapse from "@alpinejs/collapse";
-
 register();
 
+import Alpine from "alpinejs";
+import anchor from "@alpinejs/anchor";
+import collapse from "@alpinejs/collapse";
+
 window.Alpine = Alpine;
-
-Alpine.plugin(collapse);
-
+Alpine.plugin([collapse, anchor]);
 Alpine.start();
 
 document.addEventListener("DOMContentLoaded", function () {

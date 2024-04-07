@@ -83,17 +83,28 @@
 
             {{-- Buttons --}}
             <div class="mt-1.5 flex flex-row gap-5">
-                {{-- Add to Collection --}}
-                <button class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="h-7 w-7">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-                        <path d="M10 12l4 0" />
-                    </svg>
-                    Add to Collection
-                </button>
+                {{-- Add to Favorite --}}
+                <form action="{{ route('person.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="data[mediaType]" value="{{ $detail->mediaType }}">
+                    <input type="hidden" name="data[slug]" value="{{ Str::slug($detail->name) }}">
+                    <input type="hidden" name="data[id]" value="{{ $detail->id }}">
+                    <input type="hidden" name="data[profile]" value="{{ $detail->profile }}">
+                    <input type="hidden" name="data[name]" value="{{ $detail->name }}">
+                    <input type="hidden" name="data[birthday]" value="{{ $detail->birthday }}">
+                    <input type="hidden" name="data[gender]" value="{{ $detail->gender }}">
+                    <input type="hidden" name="data[popularity]" value="{{ $detail->popularity }}">
+                    <input type="hidden" name="data[biography]" value="{{ $detail->biography }}">
+                    <button type="submit"
+                        class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="h-7 w-7">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                        </svg>
+                        Add to Favorite
+                    </button>
+                </form>
             </div>
         </div>
     </section>
@@ -148,8 +159,8 @@
                 <a href="{{ request()->fullUrlWithQuery(['credit_page' => $credits->pagination->current_page + 1]) }}"
                     @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                     class="{{ $credits->pagination->current_page < $credits->pagination->last_page ? 'bg-blue-700' : 'pointer-events-none bg-blue-600' }} rounded-r-lg border border-blue-600 p-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                        stroke-linejoin="round" class="h-5 w-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M9 6l6 6l-6 6" />
                     </svg>
@@ -248,4 +259,7 @@
             </div>
         </div>
     </section>
+
+    {{-- Alert --}}
+    <x-alert />
 </x-main-layout>

@@ -120,10 +120,14 @@
             {{-- Collection --}}
             <div class="flex flex-row items-center gap-1">
                 <p class="font-bold text-gray-600">Collection:</p>
-                <a href="{{ route('explore', ['to' => 'collection', 'name' => $detail->belongs_to_collection->name, 'id' => $detail->belongs_to_collection->id, 'media_type' => $detail->mediaType]) }}"
-                    class="font-medium text-gray-400 transition-all hover:text-blue-600 hover:underline">
-                    {{ $detail->belongs_to_collection->name }}
-                </a>
+                @if ($detail->belongs_to_collection === [])
+                    <a href="{{ route('explore', ['to' => 'collection', 'name' => $detail->belongs_to_collection->name, 'id' => $detail->belongs_to_collection->id, 'media_type' => $detail->mediaType]) }}"
+                        class="font-medium text-gray-400 transition-all hover:text-blue-600 hover:underline">
+                        {{ $detail->belongs_to_collection->name }}
+                    </a>
+                @else
+                    <span class="font-medium text-gray-400">Not in Collection</span>
+                @endif
             </div>
 
             {{-- Genres --}}
@@ -159,21 +163,34 @@
 
             {{-- Buttons --}}
             <div class="mt-1.5 flex flex-row gap-5">
-                {{-- Add to Collection --}}
-                <button class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="h-7 w-7">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-                        <path d="M10 12l4 0" />
-                    </svg>
-                    Add to Collection
-                </button>
+                {{-- Add to Favorite --}}
+                <form action="{{ route('movies.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="data[mediaType]" value="{{ $detail->mediaType }}">
+                    <input type="hidden" name="data[slug]" value="{{ Str::slug($detail->name) }}">
+                    <input type="hidden" name="data[id]" value="{{ $detail->id }}">
+                    <input type="hidden" name="data[poster]" value="{{ $detail->poster }}">
+                    <input type="hidden" name="data[name]" value="{{ $detail->name }}">
+                    <input type="hidden" name="data[backdrop]" value="{{ $detail->backdrop }}">
+                    <input type="hidden" name="data[release_date]" value="{{ $detail->release_date }}">
+                    <input type="hidden" name="data[origin_country]" value="{{ $detail->origin_country }}">
+                    <input type="hidden" name="data[vote_average]" value="{{ $detail->vote_average }}">
+                    <input type="hidden" name="data[overview]" value="{{ $detail->overview }}">
+                    <button type="submit"
+                        class="flex flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold transition-all hover:bg-blue-700 active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                        </svg>
+                        Add to Favorite
+                    </button>
+                </form>
 
                 {{-- Play Trailer --}}
                 @if ($detail->videos === null)
-                    <button @click="isVideoPlayerOpen = true" disabled x-data="{ onHover: false }" x-on:mouseover="onHover = true" x-on:mouseout="onHover = false"
+                    <button @click="isVideoPlayerOpen = true" disabled x-data="{ onHover: false }" x-on:mouseover="onHover = true"
+                        x-on:mouseout="onHover = false"
                         class="relative flex cursor-not-allowed flex-row items-center gap-2 rounded-md bg-blue-600 px-3 py-2 font-bold">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
@@ -199,20 +216,22 @@
             </div>
 
             {{-- Trailer Player --}}
-            <div class="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/70" x-show="isVideoPlayerOpen" x-transition>
-                <button class="fixed right-5 top-5" @click="isVideoPlayerOpen = false">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5"
-                        stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 text-gray-400">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M18 6l-12 12" />
-                        <path d="M6 6l12 12" />
-                    </svg>
-                </button>
-                <template x-if="isVideoPlayerOpen">
-                    <iframe @click.outside="isVideoPlayerOpen = false" src="https://www.youtube.com/embed/{{ $detail->videos->key }}" allowfullscreen
-                        class="h-[720px] w-[1280px] border-none" allow="autoplay; encrypted-media"></iframe>
-                </template>
-            </div>
+            @if ($detail->videos !== null)
+                <div class="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/70" x-show="isVideoPlayerOpen" x-transition>
+                    <button class="fixed right-5 top-5" @click="isVideoPlayerOpen = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5"
+                            stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 text-gray-400">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <template x-if="isVideoPlayerOpen">
+                        <iframe @click.outside="isVideoPlayerOpen = false" src="https://www.youtube.com/embed/{{ $detail->videos->key }}" allowfullscreen
+                            class="h-[720px] w-[1280px] border-none" allow="autoplay; encrypted-media"></iframe>
+                    </template>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -246,11 +265,21 @@
             {{-- Buttons --}}
             <button @click="$refs.mySwiper.swiper.slidePrev()"
                 class="group absolute left-0 top-0 z-30 h-full bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-900 hover:to-transparent">
-                <i class='bx bx-chevron-left pr-10 text-4xl text-white transition-all duration-500 group-hover:pl-2'></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                    class="h-10 w-10 -translate-x-1.5 transition-all group-hover:translate-x-0">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M15 6l-6 6l6 6" />
+                </svg>
             </button>
             <button @click="$refs.mySwiper.swiper.slideNext()"
                 class="group absolute right-0 top-0 z-30 h-full transition-all duration-500 hover:bg-gradient-to-l hover:from-gray-900 hover:to-transparent">
-                <i class='bx bx-chevron-right pl-10 text-4xl text-white transition-all duration-500 group-hover:pr-2'></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                    class="h-10 w-10 translate-x-1.5 transition-all group-hover:translate-x-0">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M9 6l6 6l-6 6" />
+                </svg>
             </button>
         </div>
     </section>
@@ -324,4 +353,7 @@
     <section class="w-full px-5">
         <x-swiper title="Recommendation" :items="$recommends" />
     </section>
+
+    {{-- Alert --}}
+    <x-alert />
 </x-main-layout>

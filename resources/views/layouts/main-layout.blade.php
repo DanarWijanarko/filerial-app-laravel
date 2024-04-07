@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-900 pl-24 pr-4 font-poppins text-gray-50">
+<body class="bg-gray-900 pl-24 pr-4 font-poppins text-gray-50" {{ $attributes }}>
     <x-sidebar />
     {{ $slot }}
     <x-footer />

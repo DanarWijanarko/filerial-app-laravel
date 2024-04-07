@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up() : void
     {
         Schema::create('search_histories', function (Blueprint $table) {
-            $table->ulid('id');
+            $table->ulid('id')->primary()->unique();
             $table->foreignUlid('user_id')->nullable()->index();
             $table->string('type')->nullable();
             $table->string('body')->nullable();
