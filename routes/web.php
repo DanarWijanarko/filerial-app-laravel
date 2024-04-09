@@ -41,7 +41,12 @@ Route::middleware(['myAuth'])->group(function () {
     // ? Profile Controller
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'index')->name('user.index');
-        Route::delete('/profile/{id}', 'favDestroy')->name('user.favDestroy');
+        Route::get('/profile/{user}/edit', 'edit')->name('user.edit');
+        Route::put('/profile/update/details', 'update')->name('user.update');
+        Route::put('/profile/update/images', 'updateImages')->name('user.update.images');
+        Route::put('/profile/update/password', 'updatePassword')->name('user.update.password');
+        Route::delete('/profile/delete', 'destroy')->name('user.destroy');
+        Route::delete('/profile/favorite/{id}/delete', 'favDestroy')->name('user.favDestroy');
     });
 
     // ? Search Controller
@@ -68,7 +73,7 @@ Route::middleware(['myAuth'])->group(function () {
 
     // ? Person Controller
     Route::controller(PersonController::class)->group(function () {
-        Route::get("/person/{name}/detail/", "detail")->name("person.detail");
+        Route::get("/person/{name}/detail", "detail")->name("person.detail");
         Route::post('/person/addFavorite', 'store')->name('person.store');
     });
 

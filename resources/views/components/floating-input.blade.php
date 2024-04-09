@@ -2,8 +2,8 @@
 
 <div class="group relative z-0 mb-5 w-full" x-data="{ isVisible: false }">
     <input :type="isVisible ? 'text' : '{{ $type }}'" id="{{ $name }}" name="{{ $name }}" placeholder=" " value="{{ old($name) }}"
-        class="input @error($name) border-red-500 @enderror peer" />
-    <label for="{{ $name }}" class="label @error($name) text-red-500 @enderror">
+        class="floating-input @error($name) border-red-500 @enderror peer" />
+    <label for="{{ $name }}" class="floating-label @error($name) text-red-500 @enderror">
         {{ $label }}
     </label>
     @if ($type === 'password')

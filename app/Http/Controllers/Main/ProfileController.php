@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Models\User;
 use App\Models\Favorite;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\File;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Profile\UpdateRequest;
+use App\Http\Requests\Profile\PasswordUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -25,35 +32,119 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        return view('pages.main.profile.edit', [
+            'user' => $user,
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the Account Details in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request)
     {
-        //
+        $request->validated();
+
+        User::where('id', Auth::user()->id)->update([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'address' => $request->address,
+            'social' => $request->social,
+        ]);
+
+        return back()->with('status', (object) [
+            'type' => 'success',
+            'message' => 'Details has been Updated!',
+        ]);
+    }
+
+    /**
+     * Update the user's Images.
+     */
+    public function updateImages(Request $request)
+    {
+        if (!$request->exists('profile_picture') && !$request->exists('backdrop_picture')) {
+            return back()->with('status', (object) [
+                'type' => 'error',
+                'message' => 'No Images have been Replaced!',
+            ]);
+        }
+
+        if (Auth::user()->backdrop || Auth::user()->picture) {
+            $isImgExist = 0;
+        } else {
+            $isImgExist = 1;
+        }
+
+        $validated = $request->validate([
+            'profile_picture' => ['image', Rule::requiredIf($isImgExist), File::image()->max(1024)],
+            'backdrop_picture' => ['image', Rule::requiredIf($isImgExist), File::image()->max(1024)],
+        ]);
+
+        if ($request->file('profile_picture')) {
+            if ($request->oldProfileImg) {
+                Storage::delete($request->oldProfileImg);
+            }
+            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures');
+        }
+
+        if ($request->file('backdrop_picture')) {
+            if ($request->oldBackdropImg) {
+                Storage::delete($request->oldBackdropImg);
+            }
+            $validated['backdrop_picture'] = $request->file('backdrop_picture')->store('backdrop_pictures');
+        }
+
+        User::where('id', Auth::user()->id)->update([
+            'picture' => $validated['profile_picture'] ?? $request->oldProfileImg,
+            'backdrop' => $validated['backdrop_picture'] ?? $request->oldBackdropImg,
+        ]);
+
+        return back()->with('status', (object) [
+            'type' => 'success',
+            'message' => 'Account Images Updated Successfully!',
+        ]);
+    }
+
+    /**
+     * Update the user's password.
+     */
+    public function updatePassword(PasswordUpdateRequest $request)
+    {
+        $request->validated();
+
+        User::where('id', Auth::user()->id)->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('status', (object) [
+            'type' => 'success',
+            'message' => 'Password has been Updated!',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'passwordDelete' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+        $user->delete();
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('main.home');
     }
 
     /**

@@ -9,9 +9,9 @@
     <div class="fixed left-7 flex flex-col gap-7 font-bold text-gray-400">
         {{-- Profile --}}
         <a href="{{ route('user.index') }}"
-            class="group/btn {{ Route::current()->getName() === 'profile.index' ? 'text-white' : '' }} relative flex items-center justify-center transition-all">
+            class="group/btn {{ Route::current()->getName() === 'user.index' ? 'text-white' : '' }} relative flex items-center justify-center transition-all">
             <img src="https://wallpapercave.com/wp/wp11098312.jpg"
-                class="flex h-10 w-10 scale-90 items-center justify-center rounded-full object-cover text-3xl transition-all group-hover/btn:scale-100">
+                class="{{ Route::current()->getName() === 'user.index' ? 'brightness-100' : 'brightness-50' }} flex h-10 w-10 scale-90 items-center justify-center rounded-full object-cover text-3xl transition-all group-hover/btn:scale-100">
             <p
                 class="absolute left-0 origin-left scale-90 text-xl opacity-0 transition-all group-hover/parent:left-14 group-hover/btn:scale-100 group-hover/parent:opacity-100">
                 Profile</p>

@@ -5,11 +5,20 @@
 @tailwind utilities;
 
 @layer components {
-    .input {
+    .floating-input {
         @apply block w-full appearance-none border-0 border-b-2 border-gray-600 bg-transparent px-2 py-2.5 text-white focus:border-blue-500 focus:outline-none focus:ring-0;
     }
-    .label {
+    .floating-label {
         @apply absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-gray-400 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-500;
+    }
+    .default-input {
+        @apply block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500;
+    }
+    .default-label {
+        @apply mb-2 block text-sm font-medium text-white;
+    }
+    .picture-label {
+        @apply flex h-64 w-full cursor-pointer overflow-hidden flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-600 bg-gray-700 transition-all hover:bg-gray-600;
     }
 }
 
@@ -36,5 +45,3 @@
 div ::-webkit-scrollbar {
     @apply w-1;
 }
-
-

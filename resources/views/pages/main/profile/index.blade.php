@@ -23,13 +23,13 @@
                     <div class="mb-2.5 flex flex-row items-center justify-between">
                         {{-- Profile Name --}}
                         <h1 class="text-3xl font-bold text-white">
-                            Danar Wijanarko
+                            {{ Auth::user()->name }}
                         </h1>
 
                         {{-- Buttons Profile --}}
                         <div class="flex flex-row gap-1.5">
                             {{-- Edit Profile --}}
-                            <a href="#"
+                            <a href="{{ route('user.edit', ['user' => auth()->user()]) }}"
                                 class="flex flex-row items-center justify-center gap-1.5 rounded-md bg-blue-700 px-2.5 py-1.5 text-sm font-medium transition-all hover:bg-blue-800 active:scale-95">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[22px] w-[22px]">
@@ -62,10 +62,10 @@
                     {{-- Member since, Location --}}
                     <div class="mb-4 flex flex-col gap-1">
                         <p class="text-sm font-medium text-gray-400">
-                            Member since February 25, 2024
+                            Member since {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('F d, Y') }}
                         </p>
                         <p class="text-sm font-medium text-gray-400">
-                            Jakarta, Indonesia
+                            {{ Auth::user()->address ?? 'Address not Set' }}
                         </p>
                     </div>
 
