@@ -7,14 +7,15 @@
         {{-- Left Section --}}
         <div class="w-[80%] overflow-hidden rounded-xl border border-gray-800 bg-gray-800">
             {{-- Backdrop Image --}}
-            <img src="https://koreancapture.com/storage/images/blog/cphtLdOsWE7NY751GLILolylSuaPyZ4fz3FM45p1.jpg" alt="backdrop"
-                class="h-80 w-full object-cover object-top">
+            <img src="{{ Auth::user()->backdrop ? asset('storage/' . Auth::user()->backdrop) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
+                alt="backdrop" class="h-80 w-full object-cover object-top">
 
             {{-- Profile Detail --}}
             <div class="relative flex w-full flex-row justify-end">
                 {{-- Profile Picture --}}
                 <div class="absolute -top-[59.5%] left-5 overflow-hidden rounded-full bg-gray-800 p-[4.8px] shadow-xl shadow-gray-800">
-                    <img src="https://wallpapercave.com/wp/wp11098312.jpg" alt="profile picture" class="h-44 w-44 rounded-full object-cover">
+                    <img src="{{ Auth::user()->picture ? asset('storage/' . Auth::user()->picture) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
+                        alt="profile picture" class="h-44 w-44 rounded-full object-cover">
                 </div>
 
                 {{-- Profile Text --}}
