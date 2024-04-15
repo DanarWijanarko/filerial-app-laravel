@@ -50,7 +50,7 @@
     {{-- Edit --}}
     <section class="ml-2 mr-5 flex flex-row gap-5">
         {{-- Account Details --}}
-        <div class="h-fit overflow-hidden rounded-lg bg-gray-800 px-5 pb-5 pt-3">
+        <div class="h-fit w-full overflow-hidden rounded-lg bg-gray-800 px-5 pb-5 pt-3">
             {{-- Title --}}
             <h1 class="mb-3.5 w-full border-b border-gray-700 pb-2 text-xl font-bold text-white">
                 Account Details
@@ -76,9 +76,15 @@
                                 </label>
                                 <select :id="`${index}-socialMedia`" :name="`social[${index}][type]`" class="default-input">
                                     <option selected>Choose a Social Media</option>
-                                    <option :selected="data[`${index}`]['type'] === 'instagram'" value="instagram">Instagram</option>
-                                    <option :selected="data[`${index}`]['type'] === 'tiktok'" value="tiktok">Tiktok</option>
-                                    <option :selected="data[`${index}`]['type'] === 'facebook'" value="facebook">Facebook</option>
+                                    <option :selected="data[`${index}`]['type'] === 'https://www.instagram.com/'" value="https://www.instagram.com/">
+                                        Instagram
+                                    </option>
+                                    <option :selected="data[`${index}`]['type'] === 'https://www.tiktok.com/@'" value="https://www.tiktok.com/@">
+                                        Tiktok
+                                    </option>
+                                    <option :selected="data[`${index}`]['type'] === 'https://www.facebook.com/'" value="https://www.facebook.com/">
+                                        Facebook
+                                    </option>
                                 </select>
                                 @error('social.*.type')
                                     <p class="mt-2 text-xs font-medium text-red-500">{{ $message }}</p>
@@ -140,7 +146,7 @@
         </div>
 
         {{-- Right Section --}}
-        <div class="flex flex-col gap-5">
+        <div class="flex w-full flex-col gap-5">
             {{-- Account Images --}}
             <div class="col-span-3 row-span-3 overflow-hidden rounded-lg bg-gray-800 px-5 py-3">
                 {{-- Title --}}

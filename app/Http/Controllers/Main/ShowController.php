@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Models\Collection\Collection;
 use App\Models\Favorite;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TmdbService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ShowController extends Controller
 {
@@ -62,6 +64,23 @@ class ShowController extends Controller
         $showEpisodes = $this->tmdb->getEpisodes($request->id, $seasonNumber);
         $showRecommends = $this->tmdb->getRecommend($mediaType, $request->id);
 
+        // $isSessionDataExist = false;
+        // if ($request->session()->has('recently_viewed')) {
+        //     foreach ($request->session()->get('recently_viewed') as $item) {
+        //         if ($item['media_id'] === $request->id) {
+        //             $isSessionDataExist = true;
+        //         } else {
+        //             $isSessionDataExist = false;
+        //         }
+        //     }
+        // }
+        // if (!$isSessionDataExist) {
+        //     $request->session()->push('recently_viewed', [
+        //         'media_type' => $mediaType,
+        //         'media_id' => $request->id,
+        //     ]);
+        // }
+
         return view('pages.main.shows.detail', [
             'detail' => $showDetail,
             'credits' => $showCredits,
@@ -73,7 +92,7 @@ class ShowController extends Controller
 
     public function store(Request $request)
     {
-        $isExist = Favorite::where('data->id', $request->data['id'])->exists();
+        $isExist = Favorite::where('user_id', auth()->user()->id)->where('data->id', $request->data['id'])->exists();
 
         if ($isExist) {
             return back()->with('status', (object) [

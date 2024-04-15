@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
             'email' => ['required', 'email'],
             'address' => ['required'],
             'social' => ['required'],
-            'social.*.type' => ['required', 'string', 'in:instagram,tiktok,facebook'],
+            'social.*.type' => ['required', 'string', 'in:https://www.instagram.com/,https://www.tiktok.com/@,https://www.facebook.com/'],
             'social.*.username' => ['required', 'string', 'distinct'],
         ];
     }

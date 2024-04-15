@@ -1,20 +1,20 @@
 @section('title')
-    {{ __('Profile') }}
+    {{ __('Profile - ') . $user->username }}
 @endsection
 
 <x-main-layout>
-    <section class="flex flex-row gap-3 pt-10">
+    <section class="flex h-[33.25rem] flex-row gap-3 pt-10">
         {{-- Left Section --}}
         <div class="w-[80%] overflow-hidden rounded-xl border border-gray-800 bg-gray-800">
             {{-- Backdrop Image --}}
-            <img src="{{ Auth::user()->backdrop ? asset('storage/' . Auth::user()->backdrop) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
+            <img src="{{ $user->backdrop ? asset('storage/' . $user->backdrop) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
                 alt="backdrop" class="h-80 w-full object-cover object-top">
 
             {{-- Profile Detail --}}
             <div class="relative flex w-full flex-row justify-end">
                 {{-- Profile Picture --}}
                 <div class="absolute -top-[59.5%] left-5 overflow-hidden rounded-full bg-gray-800 p-[4.8px] shadow-xl shadow-gray-800">
-                    <img src="{{ Auth::user()->picture ? asset('storage/' . Auth::user()->picture) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
+                    <img src="{{ $user->picture ? asset('storage/' . $user->picture) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
                         alt="profile picture" class="h-44 w-44 rounded-full object-cover">
                 </div>
 
@@ -24,23 +24,25 @@
                     <div class="mb-2.5 flex flex-row items-center justify-between">
                         {{-- Profile Name --}}
                         <h1 class="text-3xl font-bold text-white">
-                            {{ Auth::user()->name }}
+                            {{ $user->name }}
                         </h1>
 
                         {{-- Buttons Profile --}}
                         <div class="flex flex-row gap-1.5">
                             {{-- Edit Profile --}}
-                            <a href="{{ route('user.edit', ['user' => auth()->user()]) }}"
-                                class="flex flex-row items-center justify-center gap-1.5 rounded-md bg-blue-700 px-2.5 py-1.5 text-sm font-medium transition-all hover:bg-blue-800 active:scale-95">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[22px] w-[22px]">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                    <path d="M16 5l3 3" />
-                                </svg>
-                                Edit Profile
-                            </a>
+                            @if (Auth::user()->id === $user->id)
+                                <a href="{{ route('user.edit', ['user' => auth()->user()]) }}"
+                                    class="flex flex-row items-center justify-center gap-1.5 rounded-md bg-blue-700 px-2.5 py-1.5 text-sm font-medium transition-all hover:bg-blue-800 active:scale-95">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[22px] w-[22px]">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                    Edit Profile
+                                </a>
+                            @endif
 
                             {{-- Logout --}}
                             <form action="{{ route('auth.logout') }}" method="POST">
@@ -63,10 +65,10 @@
                     {{-- Member since, Location --}}
                     <div class="mb-4 flex flex-col gap-1">
                         <p class="text-sm font-medium text-gray-400">
-                            Member since {{ \Carbon\Carbon::parse(Auth::user()->created_at)->format('F d, Y') }}
+                            Member since {{ \Carbon\Carbon::parse($user->created_at)->format('F d, Y') }}
                         </p>
                         <p class="text-sm font-medium text-gray-400">
-                            {{ Auth::user()->address ?? 'Address not Set' }}
+                            {{ $user->address ?? 'Address not Set' }}
                         </p>
                     </div>
 
@@ -90,21 +92,77 @@
         </div>
 
         {{-- Right Section --}}
-        <div class="h-96 w-[20%]">
-            <div class="w-full rounded-xl bg-gray-800 px-5 py-3">
-                <h1 class="font-bold text-white">
+        <div class="flex w-[20%] flex-col gap-3">
+            {{-- Connect --}}
+            <div class="h-[35.7%] w-full overflow-y-auto rounded-xl bg-gray-800 py-3">
+                <h1 class="mx-5 font-bold text-white">
                     Connect
                 </h1>
+                @if ($user->social !== null)
+                    <div class="mt-3 flex w-full flex-col gap-2">
+                        @foreach ($user->social as $item)
+                            <a href="{{ $item['type'] . $item['username'] }}" target="_blank" class="flex w-full flex-row gap-2 px-5 py-1 hover:bg-slate-700">
+                                {{-- Social Media Logo --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                                    @if ($item['type'] === 'https://www.instagram.com/')
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+                                        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                        <path d="M16.5 7.5l0 .01" />
+                                    @elseif ($item['type'] === 'https://www.tiktok.com/@')
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" />
+                                    @elseif ($item['type'] === 'https://www.facebook.com/')
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
+                                    @endif
+                                </svg>
+                                {{ $item['username'] }}
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="flex h-[84%] w-full items-center justify-center text-xl font-bold">No Data!</p>
+                @endif
+            </div>
+
+            {{-- Other Account's --}}
+            <div class="h-[64.3%] w-full overflow-y-auto rounded-xl bg-gray-800 py-3">
+                <h1 class="mx-5 font-bold text-white">
+                    Other Account's
+                </h1>
+                @if ($users !== null)
+                    <div class="mt-3 flex w-full flex-col gap-1">
+                        @foreach ($users as $userss)
+                            <a href="{{ route('user.index', ['username' => $userss->username]) }}"
+                                class="flex w-full flex-row items-center gap-2 px-5 py-2 hover:bg-slate-700">
+                                <img src="{{ asset('storage/' . $userss->picture) }}" alt="Profile Image" class="h-10 w-10 rounded-full object-cover">
+                                <p class="flex flex-col text-white">
+                                    <span
+                                        class="-mb-1.5 text-lg font-bold">{{ $userss->id === Auth::user()->id ? 'Me' : Str::ucfirst($userss->username) }}</span>
+                                    <span class="text-xs font-medium text-gray-400">
+                                        Member since {{ \Carbon\Carbon::parse($userss->created_at)->format('Y') }}
+                                    </span>
+                                </p>
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="flex h-[84%] w-full items-center justify-center text-xl font-bold">No Data!</p>
+                @endif
             </div>
         </div>
     </section>
 
     <section class="mt-5 w-full overflow-hidden rounded-xl border border-gray-800 bg-gray-800 px-5 pt-1">
         {{-- Tabs Menu --}}
-        <div class="mb-4 border-b border-gray-600" x-data="{ trigBtn: null }">
+        <div class="mb-4 flex flex-row justify-between border-b border-gray-600" x-data="{ trigBtn: null }">
+            {{-- Nav Link --}}
             <ul class="-mb-px flex flex-wrap text-center text-sm font-medium">
                 <li class="me-2">
-                    <a href="{{ route('user.index', ['media_type' => 'shows']) }}"
+                    <a href="{{ route('user.index', ['username' => $user->username, 'media_type' => 'shows']) }}"
                         @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                         @class([
                             'inline-block rounded-t-lg p-4 transition-all',
@@ -115,7 +173,7 @@
                     </a>
                 </li>
                 <li class="me-2">
-                    <a href="{{ route('user.index', ['media_type' => 'movies']) }}"
+                    <a href="{{ route('user.index', ['username' => $user->username, 'media_type' => 'movies']) }}"
                         @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                         @class([
                             'inline-block rounded-t-lg p-4 transition-all',
@@ -126,7 +184,7 @@
                     </a>
                 </li>
                 <li class="me-2">
-                    <a href="{{ route('user.index', ['media_type' => 'person']) }}"
+                    <a href="{{ route('user.index', ['username' => $user->username, 'media_type' => 'person']) }}"
                         @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                         @class([
                             'inline-block rounded-t-lg p-4 transition-all',
@@ -137,18 +195,7 @@
                     </a>
                 </li>
                 <li class="me-2">
-                    <a href="{{ route('user.index', ['media_type' => 'lists']) }}"
-                        @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
-                        @class([
-                            'inline-block rounded-t-lg p-4 transition-all',
-                            'border-b-2 border-blue-500 text-blue-500' =>
-                                Request::input('media_type') === 'lists',
-                        ]) class="inline-block rounded-t-lg p-4 text-white transition-all hover:text-blue-300">
-                        Lists
-                    </a>
-                </li>
-                <li class="me-2">
-                    <a href="{{ request()->fullUrlWithQuery(['media_type' => 'recently']) }}"
+                    <a href="{{ route('user.index', ['username' => $user->username, 'media_type' => 'recently']) }}"
                         @click="window.sessionStorage.setItem('scrollPosition', window.pageYOffset || document.documentElement.scrollTop)"
                         @class([
                             'inline-block rounded-t-lg p-4 transition-all',

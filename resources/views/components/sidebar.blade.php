@@ -8,10 +8,10 @@
     {{-- Menu --}}
     <div class="fixed left-7 flex flex-col gap-7 font-bold text-gray-400">
         {{-- Profile --}}
-        <a href="{{ route('user.index') }}"
-            class="group/btn {{ Route::current()->getName() === 'user.index' ? 'text-white' : '' }} relative flex items-center justify-center transition-all">
+        <a href="{{ route('user.index', ['username' => auth()->user()->username]) }}"
+            class="group/btn {{ Route::current()->getName() === 'user.index' ? (Route::current()->hasParameter('username') ? '' : 'text-white') : '' }} relative flex items-center justify-center transition-all">
             <img src="{{ Auth::user()->picture ? asset('storage/' . Auth::user()->picture) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
-                class="{{ Route::current()->getName() === 'user.index' ? 'brightness-100' : 'brightness-50' }} flex h-10 w-10 scale-90 items-center justify-center rounded-full object-cover text-3xl transition-all group-hover/btn:scale-100">
+                class="{{ Route::current()->getName() === 'user.index' ? (Route::current()->hasParameter('username') ? 'brightness-50' : 'brightness-100') : 'brightness-50' }} flex h-10 w-10 scale-90 items-center justify-center rounded-full object-cover text-3xl transition-all group-hover/btn:scale-100">
             <p
                 class="absolute left-0 origin-left scale-90 text-xl opacity-0 transition-all group-hover/parent:left-14 group-hover/btn:scale-100 group-hover/parent:opacity-100">
                 Profile</p>

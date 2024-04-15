@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Main\CollectionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -40,7 +41,7 @@ Route::middleware(['myAuth'])->group(function () {
 
     // ? Profile Controller
     Route::controller(ProfileController::class)->group(function () {
-        Route::get('/profile', 'index')->name('user.index');
+        Route::get('/profile/{username}', 'index')->name('user.index');
         Route::get('/profile/{user}/edit', 'edit')->name('user.edit');
         Route::put('/profile/update/details', 'update')->name('user.update');
         Route::put('/profile/update/images', 'updateImages')->name('user.update.images');

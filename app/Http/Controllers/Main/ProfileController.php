@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Main;
 
+use App\Models\Collection\Collection;
 use App\Models\User;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
@@ -19,14 +20,22 @@ class ProfileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, string $username)
     {
         $mediaType = $request->input('media_type', 'shows');
 
-        $results = Favorite::where('user_id', auth()->user()->id)->where('data->mediaType', $mediaType)->orderByDesc('created_at')->paginate(5)->withQueryString();
+        // get Authenticated User
+        $user = User::all()->where('username', $username)->first();
+
+        // Get All Users
+        $users = User::all()->except($user->id)->whereNotNull('username');
+
+        $results = Favorite::where('user_id', $user->id)->where('data->mediaType', $mediaType)->orderByDesc('created_at')->paginate(5)->withQueryString();
 
         return view("pages.main.profile.index", [
             'type' => $mediaType,
+            'user' => $user,
+            'users' => $users,
             'results' => $results,
         ]);
     }

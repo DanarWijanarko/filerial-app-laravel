@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->ulid('id')->primary();
             $table->string('role');
             $table->string('name')->unique();
-            $table->string('username')->unique()->nullable();
+            $table->string('username')->unique();
             $table->text('backdrop')->nullable();
             $table->text('picture')->nullable();
             $table->text('address')->nullable();
