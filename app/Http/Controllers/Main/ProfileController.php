@@ -30,7 +30,9 @@ class ProfileController extends Controller
         // Get All Users
         $users = User::all()->except($user->id)->whereNotNull('username');
 
-        $results = Favorite::where('user_id', $user->id)->where('data->mediaType', $mediaType)->orderByDesc('created_at')->paginate(5)->withQueryString();
+        // $results = Favorite::where('user_id', $user->id)->where('data->mediaType', $mediaType)->orderByDesc('created_at')->paginate(5)->withQueryString();
+
+        $results = $user->favorite()->where('data->mediaType', $mediaType)->orderByDesc('created_at')->paginate(5)->withQueryString();
 
         return view("pages.main.profile.index", [
             'type' => $mediaType,
@@ -79,7 +81,7 @@ class ProfileController extends Controller
         if (!$request->exists('profile_picture') && !$request->exists('backdrop_picture')) {
             return back()->with('status', (object) [
                 'type' => 'error',
-                'message' => 'No Images have been Replaced!',
+                'message' => ($request->oldProfileImg === null || $request->oldBackdropImg === null) ? 'No Images Included!' : 'No Images have been Replaced!',
             ]);
         }
 

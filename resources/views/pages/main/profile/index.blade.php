@@ -24,7 +24,7 @@
                     <div class="mb-2.5 flex flex-row items-center justify-between">
                         {{-- Profile Name --}}
                         <h1 class="text-3xl font-bold text-white">
-                            {{ $user->name }}
+                            {{ $user->name ?? 'Username not Set' }}
                         </h1>
 
                         {{-- Buttons Profile --}}

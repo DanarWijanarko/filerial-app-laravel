@@ -34,4 +34,9 @@ class SearchHistory extends Model
         'type',
         'body'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

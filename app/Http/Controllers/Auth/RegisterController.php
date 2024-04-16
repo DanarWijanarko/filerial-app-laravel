@@ -30,7 +30,6 @@ class RegisterController extends Controller
         $request->validated();
 
         $user = User::create([
-            "name" => $request->name,
             "role" => 'user',
             'username' => $request->username,
             "email" => $request->email,

@@ -12,7 +12,6 @@
 
         {{-- Input --}}
         <div class="flex w-full flex-col items-end">
-            <x-floating-input type="text" label="Full Name" name="name" />
             <x-floating-input type="text" label="Username" name="username" />
             <x-floating-input type="text" label="Email Address" name="email" />
             <x-floating-input type="password" label="Password" name="password" />

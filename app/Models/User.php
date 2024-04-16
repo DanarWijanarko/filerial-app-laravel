@@ -75,4 +75,9 @@ class User extends Authenticatable
             'social' => 'array',
         ];
     }
+
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
