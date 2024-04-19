@@ -8,7 +8,7 @@
         <div class="w-[80%] overflow-hidden rounded-xl border border-gray-800 bg-gray-800">
             {{-- Backdrop Image --}}
             <img src="{{ $user->backdrop ? asset('storage/' . $user->backdrop) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
-                alt="backdrop" class="h-80 w-full object-cover object-top">
+                alt="backdrop" class="h-80 w-full object-fill">
 
             {{-- Profile Detail --}}
             <div class="relative flex w-full flex-row justify-end">
@@ -138,7 +138,8 @@
                         @foreach ($users as $userss)
                             <a href="{{ route('user.index', ['username' => $userss->username]) }}"
                                 class="flex w-full flex-row items-center gap-2 px-5 py-2 hover:bg-slate-700">
-                                <img src="{{ asset('storage/' . $userss->picture) }}" alt="Profile Image" class="h-10 w-10 rounded-full object-cover">
+                                <img src="{{ $userss->picture ? asset('storage/' . $userss->picture) : 'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg' }}"
+                                    alt="Profile Image" class="h-10 w-10 rounded-full object-cover">
                                 <p class="flex flex-col text-white">
                                     <span
                                         class="-mb-1.5 text-lg font-bold">{{ $userss->id === Auth::user()->id ? 'Me' : Str::ucfirst($userss->username) }}</span>
@@ -354,7 +355,4 @@
             {{ $results->links() }}
         </div>
     </section>
-
-    {{-- Alert --}}
-    <x-alert />
 </x-main-layout>

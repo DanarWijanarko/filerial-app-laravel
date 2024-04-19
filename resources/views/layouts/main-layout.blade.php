@@ -14,6 +14,8 @@
     <x-sidebar />
     {{ $slot }}
     <x-footer />
+    {{-- Alert --}}
+    <x-alert />
 </body>
 
 </html>

@@ -78,7 +78,4 @@
             </a>
         </div>
     </form>
-
-    {{-- Alert --}}
-    <x-alert />
 </x-auth-layout>

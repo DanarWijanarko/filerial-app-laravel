@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Main;
 use Illuminate\Http\Request;
 use App\Services\TmdbService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {

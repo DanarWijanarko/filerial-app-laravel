@@ -213,7 +213,4 @@
             </div>
         </div>
     </section>
-
-    {{-- Alert --}}
-    <x-alert />
 </x-main-layout>

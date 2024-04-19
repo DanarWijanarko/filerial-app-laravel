@@ -45,3 +45,15 @@
 div ::-webkit-scrollbar {
     @apply w-1;
 }
+
+section ::-webkit-scrollbar {
+    @apply w-1.5 scroll-me-10;
+}
+
+section ::-webkit-scrollbar-track {
+    @apply rounded-r-full bg-gray-700;
+}
+
+section ::-webkit-scrollbar-thumb {
+    @apply rounded-r-xl bg-gray-600;
+}

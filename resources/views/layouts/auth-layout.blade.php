@@ -20,6 +20,9 @@
 
 <body class="flex min-h-screen items-center justify-center bg-cover bg-no-repeat font-poppins text-white backdrop-brightness-[0.35]">
     {{ $slot }}
+
+    {{-- Alert --}}
+    <x-alert />
 </body>
 
 </html>

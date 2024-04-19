@@ -210,6 +210,58 @@ class TmdbService
         }
     }
 
+    public function getLanguages()
+    {
+        try {
+            $response = Http::withQueryParameters([
+                'api_key' => $this->apiKey
+            ])->get($this->baseUrl . '/configuration/languages');
+
+            if ($response->successful()) {
+                return collect($response->json());
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function getGenres($mediaType)
+    {
+        try {
+            $response = Http::withQueryParameters([
+                'api_key' => $this->apiKey
+            ])->get($this->baseUrl . '/genre/' . self::mediaTypeConvert($mediaType) . '/list');
+
+            if ($response->successful()) {
+                return collect($response->json()['genres']);
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function getNetworks()
+    {
+        $json = file_get_contents(base_path('public/networks.json'));
+        $networks = json_decode($json, true);
+
+        $response = [];
+        foreach ($networks as $network) {
+            try {
+                $response = Http::withQueryParameters([
+                    'api_key' => $this->apiKey
+                ])->get($this->baseUrl . '/network/' . $network['network_id'])->object();
+
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        if ($response->successful()) {
+            return collect($response->json());
+        }
+    }
+
     private function mediaTypeConvert($mediaType) : string
     {
         $newType = '';

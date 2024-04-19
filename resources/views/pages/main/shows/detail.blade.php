@@ -230,9 +230,6 @@
     <section class="w-full px-5">
         <x-swiper title="Recommendation" :detailName="$detail->name" :items="$recommends" />
     </section>
-
-    {{-- Alert --}}
-    <x-alert />
 </x-main-layout>
 
 <script>

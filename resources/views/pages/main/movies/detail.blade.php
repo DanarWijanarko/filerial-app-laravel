@@ -353,7 +353,4 @@
     <section class="w-full px-5">
         <x-swiper title="Recommendation" :items="$recommends" />
     </section>
-
-    {{-- Alert --}}
-    <x-alert />
 </x-main-layout>
