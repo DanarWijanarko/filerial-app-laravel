@@ -20,6 +20,13 @@
     .picture-label {
         @apply flex h-64 w-full cursor-pointer overflow-hidden flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-600 bg-gray-700 transition-all hover:bg-gray-600;
     }
+    .default-range {
+        @apply bg-transparent appearance-none [&::-webkit-appearance]:appearance-none [&::-webkit-slider-runnable-track]:[&::-webkit-appearance]:appearance-none [&::-webkit-slider-runnable-track]:h-2.5 [&::-webkit-slider-runnable-track]:w-2.5 [&::-webkit-slider-runnable-track]:place-content-center [&::-webkit-slider-runnable-track]:rounded-lg [&::-webkit-slider-runnable-track]:bg-gray-700 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-200 [&::-webkit-slider-thumb]:[&::-webkit-appearance]:appearance-none;
+    }
+}
+
+[x-cloak] {
+    display: none !important;
 }
 
 /* width */

@@ -262,6 +262,21 @@ class TmdbService
         }
     }
 
+    public function getAvailableCountry()
+    {
+        try {
+            $response = Http::withQueryParameters([
+                'api_key' => $this->apiKey
+            ])->get($this->baseUrl . '/watch/providers/regions');
+
+            if ($response->successful()) {
+                return collect($response->json()['results']);
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
     private function mediaTypeConvert($mediaType) : string
     {
         $newType = '';

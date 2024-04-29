@@ -1,6 +1,6 @@
 @props(['title', 'items', 'detailName' => ''])
 
-<section x-data="{ mySwiper: false }">
+<section x-data="{ mySwiper: false }" x-cloak>
     {{-- Section Title --}}
     <h1 class="text-3xl font-bold">{{ $title }}</h1>
 

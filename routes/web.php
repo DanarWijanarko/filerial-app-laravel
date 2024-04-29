@@ -58,7 +58,7 @@ Route::middleware(['myAuth'])->group(function () {
 
     // ? Show Controller
     Route::controller(ShowController::class)->group(function () {
-        Route::get("/shows/{type?}", "index")->name("shows.index");
+        Route::get("/shows", "index")->name("shows.index");
         Route::post("/shows/filters", "filter")->name("shows.filter"); // ! Working
         Route::get("/shows/{name}/detail", "detail")->name("shows.detail");
         Route::post("/shows/addFavorite", "store")->name("shows.store");

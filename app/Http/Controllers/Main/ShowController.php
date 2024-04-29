@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Main;
 
-use App\Models\Collection\Collection;
-use App\Models\Favorite;
+use Carbon\Carbon;
 use App\Models\Network;
+use App\Models\Favorite;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TmdbService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Collection\Collection;
 
 class ShowController extends Controller
 {
@@ -20,36 +21,25 @@ class ShowController extends Controller
         $this->tmdb = new TmdbService();
     }
 
-    public function index(Request $request, string $type)
+    public function index(Request $request)
     {
         $mediaType = Str::of($request->route()->getName())->explode('.')[0];
 
-        $sort_by = $request->input('sort_by', 'popularity.desc');
-
+        $allAvailableCountry = $this->tmdb->getAvailableCountry()->all();
         $allGenres = $this->tmdb->getGenres($mediaType)->all();
         $allLanguages = $this->tmdb->getLanguages()->all();
         $allNetworks = Network::all()->toArray();
 
-        $discover = null;
-        switch ($type) {
-            case 'popular':
-                $discover = $this->tmdb->getDiscover(
-                    mediaType: $mediaType,
-                    sort: $sort_by,
-                    country: "KR",
-                    year: 2024,
-                    page: 1,
-                );
-                break;
-            case 'top_rated':
-                break;
-            case 'on_the_air':
-                break;
-            case 'airing_today':
-                break;
-        }
+        $discover = $this->tmdb->getDiscover(
+            mediaType: $mediaType,
+            sort: 'popularity.desc',
+            country: "KR",
+            year: 2024,
+            page: 1,
+        );
 
         return view("pages.main.shows.index", [
+            'allAvailableCountry' => $allAvailableCountry,
             'allGenres' => $allGenres,
             'allLanguages' => $allLanguages,
             'allNetworks' => $allNetworks,
@@ -62,13 +52,17 @@ class ShowController extends Controller
         $mediaType = Str::of($request->route()->getName())->explode('.')[0];
 
         $sort_by = $request->input('sort_by', 'popularity.desc');
+        $selectedWatchProviders = $request->input('provider_ids', null);
+        $selectedWatchRegion = $selectedWatchProviders === null ? null : $request->input('watch_region', null);
         $selectedGenres = $request->input('genres', null);
         $selectedLanguages = $request->input('original_language', 'Korean');
         $selectedNetwork = $request->input('network', 'Filter by Show Networks');
+        $selectedFirstAirDateYear = $request->input('first_air_date_year', null);
 
+        $allAvailableCountry = $this->tmdb->getAvailableCountry()->all();
         $allGenres = $this->tmdb->getGenres($mediaType)->all();
         $allLanguages = $this->tmdb->getLanguages()->all();
-        $allNetworks = Network::all()->toArray();
+        $allNetworks = Network::get()->toArray();
 
         $original_language = $selectedLanguages !== 'None Selected' ? $this->tmdb->getLanguages()->filter(function ($value, $key) use ($selectedLanguages) {
             return $value['english_name'] === $selectedLanguages;
@@ -78,7 +72,7 @@ class ShowController extends Controller
             return $value['name'] === $selectedNetwork;
         })->first()->toArray() : null;
 
-        dd($selectedGenres, $original_language, $network);
+        dd($selectedGenres, $original_language, $network, $selectedFirstAirDateYear, $selectedWatchRegion, $selectedWatchProviders);
 
         $discover = $this->tmdb->getDiscover(
             mediaType: $mediaType,
@@ -89,12 +83,16 @@ class ShowController extends Controller
         );
 
         return view("pages.main.shows.index", [
+            'allAvailableCountry' => $allAvailableCountry,
             'allGenres' => $allGenres,
             'allLanguages' => $allLanguages,
             'allNetworks' => $allNetworks,
+            'selectedWatchRegion' => $selectedWatchRegion,
+            'selectedWatchProviders' => $selectedWatchProviders,
             'selectedGenres' => $selectedGenres,
             'selectedLanguange' => $selectedLanguages,
             'selectedNetwork' => $selectedNetwork,
+            'selectedFirstAirDateYear' => $selectedFirstAirDateYear,
             "results" => $discover->results,
         ]);
     }

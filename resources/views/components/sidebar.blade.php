@@ -47,7 +47,7 @@
         </a>
 
         {{-- Shows --}}
-        <a href="{{ route('shows.index', ['type' => 'popular']) }}"
+        <a href="{{ route('shows.index') }}"
             class="group/btn {{ Route::current()->getName() === 'shows.index' ? 'text-white' : '' }} relative flex items-center justify-center transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
                 stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 scale-90 transition-all group-hover/btn:scale-100">
